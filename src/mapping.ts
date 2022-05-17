@@ -1,4 +1,4 @@
-import { BigInt } from "@graphprotocol/graph-ts"
+import { BigInt, Bytes } from "@graphprotocol/graph-ts"
 import { PoolFactory, newPoolEvent } from "../generated/PoolFactory/PoolFactory"
 import { Pool } from "../generated/schema"
 
@@ -18,7 +18,7 @@ export function handleNewPoolEvent(event: newPoolEvent): void {
 
   // Entity fields can be set based on event parameters
   entity.poolAddr = event.params.param1
-  entity.poolTokens = event.params.param2
+  entity.poolTokens = (event.params.param2).map<Bytes>(item => <Bytes>(item))
 
   // Entities can be written to the store with `.save()`
   entity.save()
