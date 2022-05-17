@@ -1,0 +1,23 @@
+specVersion: 0.0.2
+schema:
+  file: ./schema.graphql
+dataSources:
+  - kind: ethereum
+    name: PoolFactory
+    network: mumbai
+    source:
+      address: "0xF2bA9A86fFe5040C57d95CC16a94ac813b6c5Af3"
+      abi: PoolFactory
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.5
+      language: wasm/assemblyscript
+      entities:
+        - newPoolEvent
+      abis:
+        - name: PoolFactory
+          file: ./abis/PoolFactory.json
+      eventHandlers:
+        - event: newPoolEvent(uint256,address,address[])
+          handler: handlenewPoolEvent
+      file: ./src/mapping.ts
