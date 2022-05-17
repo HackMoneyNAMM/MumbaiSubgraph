@@ -12,13 +12,11 @@ export function handleNewPoolEvent(event: newPoolEvent): void {
   if (!entity) {
     entity = new Pool(event.transaction.from.toHex())
 
-    // Entity fields can be set using simple assignments
     entity.poolId = event.params.param0
+    entity.poolAddr = event.params.param1
+    entity.poolTokens = (event.params.param2).map<Bytes>(item => <Bytes>(item))
   }
-
-  // Entity fields can be set based on event parameters
-  entity.poolAddr = event.params.param1
-  entity.poolTokens = (event.params.param2).map<Bytes>(item => <Bytes>(item))
+  
 
   // Entities can be written to the store with `.save()`
   entity.save()
