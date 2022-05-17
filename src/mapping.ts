@@ -13,15 +13,12 @@ export function handleNewPoolEvent(event: newPoolEvent): void {
     entity = new Pool(event.transaction.from.toHex())
 
     // Entity fields can be set using simple assignments
-    entity.id = BigInt.fromI32(0)
+    entity.id = entity.params.param0
   }
 
-  // BigInt and BigDecimal math are supported
-  entity.count = entity.count + BigInt.fromI32(1)
-
   // Entity fields can be set based on event parameters
-  entity.param0 = event.params.param0
-  entity.param1 = event.params.param1
+  entity.poolAddr = event.params.param1
+  entity.poolTokens = event.params.param2
 
   // Entities can be written to the store with `.save()`
   entity.save()
