@@ -11,7 +11,7 @@ import {
   BigDecimal
 } from "@graphprotocol/graph-ts";
 
-export class ExampleEntity extends Entity {
+export class Pool extends Entity {
   constructor(id: string) {
     super();
     this.set("id", Value.fromString(id));
@@ -19,18 +19,18 @@ export class ExampleEntity extends Entity {
 
   save(): void {
     let id = this.get("id");
-    assert(id != null, "Cannot save ExampleEntity entity without an ID");
+    assert(id != null, "Cannot save Pool entity without an ID");
     if (id) {
       assert(
         id.kind == ValueKind.STRING,
-        `Entities of type ExampleEntity must have an ID of type String but the id '${id.displayData()}' is of type ${id.displayKind()}`
+        `Entities of type Pool must have an ID of type String but the id '${id.displayData()}' is of type ${id.displayKind()}`
       );
-      store.set("ExampleEntity", id.toString(), this);
+      store.set("Pool", id.toString(), this);
     }
   }
 
-  static load(id: string): ExampleEntity | null {
-    return changetype<ExampleEntity | null>(store.get("ExampleEntity", id));
+  static load(id: string): Pool | null {
+    return changetype<Pool | null>(store.get("Pool", id));
   }
 
   get id(): string {
@@ -42,30 +42,30 @@ export class ExampleEntity extends Entity {
     this.set("id", Value.fromString(value));
   }
 
-  get count(): BigInt {
-    let value = this.get("count");
+  get poolId(): BigInt {
+    let value = this.get("poolId");
     return value!.toBigInt();
   }
 
-  set count(value: BigInt) {
-    this.set("count", Value.fromBigInt(value));
+  set poolId(value: BigInt) {
+    this.set("poolId", Value.fromBigInt(value));
   }
 
-  get param0(): BigInt {
-    let value = this.get("param0");
-    return value!.toBigInt();
-  }
-
-  set param0(value: BigInt) {
-    this.set("param0", Value.fromBigInt(value));
-  }
-
-  get param1(): Bytes {
-    let value = this.get("param1");
+  get poolAddr(): Bytes {
+    let value = this.get("poolAddr");
     return value!.toBytes();
   }
 
-  set param1(value: Bytes) {
-    this.set("param1", Value.fromBytes(value));
+  set poolAddr(value: Bytes) {
+    this.set("poolAddr", Value.fromBytes(value));
+  }
+
+  get poolTokens(): Array<Bytes> {
+    let value = this.get("poolTokens");
+    return value!.toBytesArray();
+  }
+
+  set poolTokens(value: Array<Bytes>) {
+    this.set("poolTokens", Value.fromBytesArray(value));
   }
 }

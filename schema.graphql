@@ -1,5 +1,6 @@
 type Pool @entity {
-  id: BigInt!
+  id: ID!
+  poolId: BigInt!
   poolAddr: Bytes!
   poolTokens: [Bytes!]!
 }

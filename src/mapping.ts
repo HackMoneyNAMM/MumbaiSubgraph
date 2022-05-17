@@ -13,7 +13,7 @@ export function handleNewPoolEvent(event: newPoolEvent): void {
     entity = new Pool(event.transaction.from.toHex())
 
     // Entity fields can be set using simple assignments
-    entity.id = entity.params.param0
+    entity.poolId = event.params.param0
   }
 
   // Entity fields can be set based on event parameters

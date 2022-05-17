@@ -19,5 +19,5 @@ dataSources:
           file: ./abis/PoolFactory.json
       eventHandlers:
         - event: newPoolEvent(uint256,address,address[])
-          handler: handlenewPoolEvent
+          handler: handleNewPoolEvent
       file: ./src/mapping.ts
