@@ -7,7 +7,7 @@ dataSources:
     name: PoolFactory
     network: mumbai
     source:
-      address: "0x8caf6ac933e70af0d76af7960338ed123e875b5e"
+      address: "0x5f3e0a4fffcd7fd90912cfa55390c91190d2d54d"
       abi: PoolFactory
       startBlock: 26409491
     mapping:
@@ -40,27 +40,6 @@ templates:
         - name: Pool
           file: ./abis/Pool.json
       eventHandlers:
-        - event: addedLiquidityEvent(uint256,address,uint256[],uint256)
-          handler: handleAddedLiquidityEvent
         - event: newPoolEvent(string,string,uint256,address,address,address[],string[],uint256,uint256)
           handler: handleNewPoolEvent
-      file: ./src/mapping.ts
-  - kind: ethereum
-    name: LPToken
-    network: mumbai
-    source:
-      abi: LPToken
-    mapping:
-      kind: ethereum/events
-      apiVersion: 0.0.6
-      language: wasm/assemblyscript
-      entities:
-        - Pool
-        - TokenBalance
-      abis:
-        - name: LPToken
-          file: ./abis/LPToken.json
-      eventHandlers:
-        - event: Transfer(indexed address,indexed address,uint256)
-          handler: handleLPTransfer
       file: ./src/mapping.ts

@@ -46,56 +46,56 @@ export function handleNewPoolEvent(event: newPoolEvent): void {
 }
 
 
-export function handleAddedLiquidityEvent(event: addedLiquidityEvent): void {
-    let entity = Pool.load(event.params.id.toHex())
+// export function handleAddedLiquidityEvent(event: addedLiquidityEvent): void {
+//     let entity = Pool.load(event.params.id.toHex())
 
-    if(entity){
-      const amountsArr = event.params.amountsArr
+//     if(entity){
+//       const amountsArr = event.params.amountsArr
 
-      //update reserves
-      for(let i=0; i<amountsArr.length; ++i){
-          if(entity.reserves)
-            entity.reserves[i] = entity.reserves[i].plus(amountsArr[i]);
-      }
-      entity.save()
-    }    
-}
+//       //update reserves
+//       for(let i=0; i<amountsArr.length; ++i){
+//           if(entity.reserves)
+//             entity.reserves[i] = entity.reserves[i].plus(amountsArr[i]);
+//       }
+//       entity.save()
+//     }    
+// }
 
-export function handleLPTransfer(event: Transfer): void {
-  let userTo = User.load(event.params.to.toHex())
-  if(!userTo){
-    userTo = new User(event.params.to.toHex())
-    userTo.walletAddr = event.params.to
-    userTo.tokens = new Array<string>()
-  }
+// export function handleLPTransfer(event: Transfer): void {
+//   let userTo = User.load(event.params.to.toHex())
+//   if(!userTo){
+//     userTo = new User(event.params.to.toHex())
+//     userTo.walletAddr = event.params.to
+//     userTo.tokens = new Array<string>()
+//   }
   
-  let userFrom = User.load(event.params.from.toHex())
-  if(!userFrom){
-    userFrom = new User(event.params.from.toHex())
-    userFrom.walletAddr = event.params.from
-    userFrom.tokens = new Array<string>()
-  }
+//   let userFrom = User.load(event.params.from.toHex())
+//   if(!userFrom){
+//     userFrom = new User(event.params.from.toHex())
+//     userFrom.walletAddr = event.params.from
+//     userFrom.tokens = new Array<string>()
+//   }
 
-  let ToBalKey = event.address.toHex().concat(userTo.walletAddr.toHex())
-  let userToBal = TokenBalance.load(ToBalKey)
-  if(!userToBal){
-    userToBal = new TokenBalance(ToBalKey)
-    userTo.tokens.push(ToBalKey)
-    userToBal.balance = new BigInt(0)
-  }
+//   let ToBalKey = event.address.toHex().concat(userTo.walletAddr.toHex())
+//   let userToBal = TokenBalance.load(ToBalKey)
+//   if(!userToBal){
+//     userToBal = new TokenBalance(ToBalKey)
+//     userTo.tokens.push(ToBalKey)
+//     userToBal.balance = new BigInt(0)
+//   }
     
-  let FromBalKey = event.address.toHex().concat(userFrom.walletAddr.toHex())
-  let userFromBal = TokenBalance.load(FromBalKey)
-  if(!userFromBal){
-    userFromBal = new TokenBalance(FromBalKey)
-    userFrom.tokens.push(FromBalKey)
-    userFromBal.balance = new BigInt(0)
-  }
+//   let FromBalKey = event.address.toHex().concat(userFrom.walletAddr.toHex())
+//   let userFromBal = TokenBalance.load(FromBalKey)
+//   if(!userFromBal){
+//     userFromBal = new TokenBalance(FromBalKey)
+//     userFrom.tokens.push(FromBalKey)
+//     userFromBal.balance = new BigInt(0)
+//   }
 
-  userToBal.balance.plus(event.params.value)
-  userFromBal.balance.minus(event.params.value)
+//   userToBal.balance.plus(event.params.value)
+//   userFromBal.balance.minus(event.params.value)
 
-}
+// }
 
 
 

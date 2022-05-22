@@ -15,13 +15,3 @@ export class Pool extends DataSourceTemplate {
     DataSourceTemplate.createWithContext("Pool", [address.toHex()], context);
   }
 }
-
-export class LPToken extends DataSourceTemplate {
-  static create(address: Address): void {
-    DataSourceTemplate.create("LPToken", [address.toHex()]);
-  }
-
-  static createWithContext(address: Address, context: DataSourceContext): void {
-    DataSourceTemplate.createWithContext("LPToken", [address.toHex()], context);
-  }
-}
