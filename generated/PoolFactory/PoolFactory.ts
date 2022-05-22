@@ -10,29 +10,43 @@ import {
   BigInt
 } from "@graphprotocol/graph-ts";
 
-export class newPoolEvent extends ethereum.Event {
-  get params(): newPoolEvent__Params {
-    return new newPoolEvent__Params(this);
+export class pong extends ethereum.Event {
+  get params(): pong__Params {
+    return new pong__Params(this);
   }
 }
 
-export class newPoolEvent__Params {
-  _event: newPoolEvent;
+export class pong__Params {
+  _event: pong;
 
-  constructor(event: newPoolEvent) {
+  constructor(event: pong) {
     this._event = event;
   }
 
-  get param0(): BigInt {
+  get cntr(): BigInt {
+    return this._event.parameters[0].value.toBigInt();
+  }
+}
+
+export class poolDeploy extends ethereum.Event {
+  get params(): poolDeploy__Params {
+    return new poolDeploy__Params(this);
+  }
+}
+
+export class poolDeploy__Params {
+  _event: poolDeploy;
+
+  constructor(event: poolDeploy) {
+    this._event = event;
+  }
+
+  get id(): BigInt {
     return this._event.parameters[0].value.toBigInt();
   }
 
-  get param1(): Address {
+  get addr(): Address {
     return this._event.parameters[1].value.toAddress();
-  }
-
-  get param2(): Array<Address> {
-    return this._event.parameters[2].value.toAddressArray();
   }
 }
 
@@ -41,18 +55,50 @@ export class PoolFactory extends ethereum.SmartContract {
     return new PoolFactory("PoolFactory", address);
   }
 
-  newPool(tokens: Array<Address>): Address {
-    let result = super.call("newPool", "newPool(address[]):(address)", [
-      ethereum.Value.fromAddressArray(tokens)
-    ]);
+  newPool(
+    poolName: string,
+    poolTicker: string,
+    tokens: Array<Address>,
+    tokenNames: Array<string>,
+    sigma: BigInt,
+    eta: BigInt
+  ): Address {
+    let result = super.call(
+      "newPool",
+      "newPool(string,string,address[],string[],uint256,uint256):(address)",
+      [
+        ethereum.Value.fromString(poolName),
+        ethereum.Value.fromString(poolTicker),
+        ethereum.Value.fromAddressArray(tokens),
+        ethereum.Value.fromStringArray(tokenNames),
+        ethereum.Value.fromUnsignedBigInt(sigma),
+        ethereum.Value.fromUnsignedBigInt(eta)
+      ]
+    );
 
     return result[0].toAddress();
   }
 
-  try_newPool(tokens: Array<Address>): ethereum.CallResult<Address> {
-    let result = super.tryCall("newPool", "newPool(address[]):(address)", [
-      ethereum.Value.fromAddressArray(tokens)
-    ]);
+  try_newPool(
+    poolName: string,
+    poolTicker: string,
+    tokens: Array<Address>,
+    tokenNames: Array<string>,
+    sigma: BigInt,
+    eta: BigInt
+  ): ethereum.CallResult<Address> {
+    let result = super.tryCall(
+      "newPool",
+      "newPool(string,string,address[],string[],uint256,uint256):(address)",
+      [
+        ethereum.Value.fromString(poolName),
+        ethereum.Value.fromString(poolTicker),
+        ethereum.Value.fromAddressArray(tokens),
+        ethereum.Value.fromStringArray(tokenNames),
+        ethereum.Value.fromUnsignedBigInt(sigma),
+        ethereum.Value.fromUnsignedBigInt(eta)
+      ]
+    );
     if (result.reverted) {
       return new ethereum.CallResult();
     }
@@ -78,8 +124,28 @@ export class NewPoolCall__Inputs {
     this._call = call;
   }
 
+  get poolName(): string {
+    return this._call.inputValues[0].value.toString();
+  }
+
+  get poolTicker(): string {
+    return this._call.inputValues[1].value.toString();
+  }
+
   get tokens(): Array<Address> {
-    return this._call.inputValues[0].value.toAddressArray();
+    return this._call.inputValues[2].value.toAddressArray();
+  }
+
+  get tokenNames(): Array<string> {
+    return this._call.inputValues[3].value.toStringArray();
+  }
+
+  get sigma(): BigInt {
+    return this._call.inputValues[4].value.toBigInt();
+  }
+
+  get eta(): BigInt {
+    return this._call.inputValues[5].value.toBigInt();
   }
 }
 
@@ -92,5 +158,31 @@ export class NewPoolCall__Outputs {
 
   get poolAddr(): Address {
     return this._call.outputValues[0].value.toAddress();
+  }
+}
+
+export class PingCall extends ethereum.Call {
+  get inputs(): PingCall__Inputs {
+    return new PingCall__Inputs(this);
+  }
+
+  get outputs(): PingCall__Outputs {
+    return new PingCall__Outputs(this);
+  }
+}
+
+export class PingCall__Inputs {
+  _call: PingCall;
+
+  constructor(call: PingCall) {
+    this._call = call;
+  }
+}
+
+export class PingCall__Outputs {
+  _call: PingCall;
+
+  constructor(call: PingCall) {
+    this._call = call;
   }
 }

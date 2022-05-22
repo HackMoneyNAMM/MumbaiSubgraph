@@ -1,23 +1,66 @@
-specVersion: 0.0.2
+specVersion: 0.0.4
 schema:
   file: ./schema.graphql
+repository: https://github.com/HackMoneyNAMM/MumbaiSubgraph
 dataSources:
   - kind: ethereum
     name: PoolFactory
     network: mumbai
     source:
-      address: "0xF2bA9A86fFe5040C57d95CC16a94ac813b6c5Af3"
+      address: "0x8caf6ac933e70af0d76af7960338ed123e875b5e"
       abi: PoolFactory
+      startBlock: 26409491
     mapping:
       kind: ethereum/events
-      apiVersion: 0.0.5
+      apiVersion: 0.0.6
       language: wasm/assemblyscript
       entities:
-        - newPoolEvent
+        - Pool
       abis:
         - name: PoolFactory
           file: ./abis/PoolFactory.json
       eventHandlers:
-        - event: newPoolEvent(uint256,address,address[])
+        - event: poolDeploy(uint256,address)
+          handler: handlePoolDeploy
+      file: ./src/mapping.ts
+templates:
+  - kind: ethereum
+    name: Pool
+    network: mumbai
+    source:
+      abi: Pool
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.6
+      language: wasm/assemblyscript
+      entities:
+        - Pool
+        - TokenBalance
+      abis:
+        - name: Pool
+          file: ./abis/Pool.json
+      eventHandlers:
+        - event: addedLiquidityEvent(uint256,address,uint256[],uint256)
+          handler: handleAddedLiquidityEvent
+        - event: newPoolEvent(string,string,uint256,address,address,address[],string[],uint256,uint256)
           handler: handleNewPoolEvent
+      file: ./src/mapping.ts
+  - kind: ethereum
+    name: LPToken
+    network: mumbai
+    source:
+      abi: LPToken
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.6
+      language: wasm/assemblyscript
+      entities:
+        - Pool
+        - TokenBalance
+      abis:
+        - name: LPToken
+          file: ./abis/LPToken.json
+      eventHandlers:
+        - event: Transfer(indexed address,indexed address,uint256)
+          handler: handleLPTransfer
       file: ./src/mapping.ts

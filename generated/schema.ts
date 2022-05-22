@@ -60,12 +60,184 @@ export class Pool extends Entity {
     this.set("poolAddr", Value.fromBytes(value));
   }
 
-  get poolTokens(): Array<Bytes> {
-    let value = this.get("poolTokens");
+  get LPAddr(): Bytes {
+    let value = this.get("LPAddr");
+    return value!.toBytes();
+  }
+
+  set LPAddr(value: Bytes) {
+    this.set("LPAddr", Value.fromBytes(value));
+  }
+
+  get totalTokenNum(): i32 {
+    let value = this.get("totalTokenNum");
+    return value!.toI32();
+  }
+
+  set totalTokenNum(value: i32) {
+    this.set("totalTokenNum", Value.fromI32(value));
+  }
+
+  get tokenAddresses(): Array<Bytes> {
+    let value = this.get("tokenAddresses");
     return value!.toBytesArray();
   }
 
-  set poolTokens(value: Array<Bytes>) {
-    this.set("poolTokens", Value.fromBytesArray(value));
+  set tokenAddresses(value: Array<Bytes>) {
+    this.set("tokenAddresses", Value.fromBytesArray(value));
+  }
+
+  get tokenNames(): Array<string> {
+    let value = this.get("tokenNames");
+    return value!.toStringArray();
+  }
+
+  set tokenNames(value: Array<string>) {
+    this.set("tokenNames", Value.fromStringArray(value));
+  }
+
+  get name(): string {
+    let value = this.get("name");
+    return value!.toString();
+  }
+
+  set name(value: string) {
+    this.set("name", Value.fromString(value));
+  }
+
+  get ticker(): string {
+    let value = this.get("ticker");
+    return value!.toString();
+  }
+
+  set ticker(value: string) {
+    this.set("ticker", Value.fromString(value));
+  }
+
+  get reserves(): Array<BigInt> {
+    let value = this.get("reserves");
+    return value!.toBigIntArray();
+  }
+
+  set reserves(value: Array<BigInt>) {
+    this.set("reserves", Value.fromBigIntArray(value));
+  }
+
+  get sigma(): BigInt {
+    let value = this.get("sigma");
+    return value!.toBigInt();
+  }
+
+  set sigma(value: BigInt) {
+    this.set("sigma", Value.fromBigInt(value));
+  }
+
+  get eta(): BigInt {
+    let value = this.get("eta");
+    return value!.toBigInt();
+  }
+
+  set eta(value: BigInt) {
+    this.set("eta", Value.fromBigInt(value));
+  }
+}
+
+export class TokenBalance extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id != null, "Cannot save TokenBalance entity without an ID");
+    if (id) {
+      assert(
+        id.kind == ValueKind.STRING,
+        `Entities of type TokenBalance must have an ID of type String but the id '${id.displayData()}' is of type ${id.displayKind()}`
+      );
+      store.set("TokenBalance", id.toString(), this);
+    }
+  }
+
+  static load(id: string): TokenBalance | null {
+    return changetype<TokenBalance | null>(store.get("TokenBalance", id));
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value!.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get address(): Bytes {
+    let value = this.get("address");
+    return value!.toBytes();
+  }
+
+  set address(value: Bytes) {
+    this.set("address", Value.fromBytes(value));
+  }
+
+  get balance(): BigInt {
+    let value = this.get("balance");
+    return value!.toBigInt();
+  }
+
+  set balance(value: BigInt) {
+    this.set("balance", Value.fromBigInt(value));
+  }
+}
+
+export class User extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id != null, "Cannot save User entity without an ID");
+    if (id) {
+      assert(
+        id.kind == ValueKind.STRING,
+        `Entities of type User must have an ID of type String but the id '${id.displayData()}' is of type ${id.displayKind()}`
+      );
+      store.set("User", id.toString(), this);
+    }
+  }
+
+  static load(id: string): User | null {
+    return changetype<User | null>(store.get("User", id));
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value!.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get walletAddr(): Bytes {
+    let value = this.get("walletAddr");
+    return value!.toBytes();
+  }
+
+  set walletAddr(value: Bytes) {
+    this.set("walletAddr", Value.fromBytes(value));
+  }
+
+  get tokens(): Array<string> {
+    let value = this.get("tokens");
+    return value!.toStringArray();
+  }
+
+  set tokens(value: Array<string>) {
+    this.set("tokens", Value.fromStringArray(value));
   }
 }

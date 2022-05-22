@@ -2,5 +2,25 @@ type Pool @entity {
   id: ID!
   poolId: BigInt!
   poolAddr: Bytes!
-  poolTokens: [Bytes!]!
+  LPAddr: Bytes!
+  totalTokenNum: Int
+  tokenAddresses: [Bytes!]!
+  tokenNames: [String!]!
+  name: String!
+  ticker: String!
+  reserves: [BigInt!]!
+  sigma: BigInt!
+  eta: BigInt!
+}
+
+type TokenBalance @entity {
+  id: ID!
+  address: Bytes!
+  balance: BigInt!
+}
+
+type User @entity {
+  id: ID!
+  walletAddr: Bytes!
+  tokens: [TokenBalance!]! @relation
 }
